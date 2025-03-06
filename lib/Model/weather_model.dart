@@ -8,6 +8,9 @@ class WeatherModel {
   final int pressure;
   final int seaLevel;
   final List<WeatherInfo> weather;
+  final DateTime dateTime;
+  final double latitude;
+  final double longitude;
 
   WeatherModel({
     required this.name,
@@ -19,6 +22,10 @@ class WeatherModel {
     required this.pressure,
     required this.seaLevel,
     required this.weather,
+    required this.dateTime,
+    required this.latitude,
+    required this.longitude,
+
   });
 
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
@@ -35,6 +42,9 @@ class WeatherModel {
       (json['weather'].map((weather) => WeatherInfo.fromJson(weather),
       )
       ),
+      dateTime: DateTime.fromMillisecondsSinceEpoch((json['dt']+json['timezone']) * 1000).toUtc(),
+      latitude: json['coord']['lat'],
+      longitude: json['coord']['lon'],
     );
   }
 }
