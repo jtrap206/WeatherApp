@@ -50,7 +50,7 @@ class WeatherService {
       if(response.statusCode == 200){
         var json = jsonDecode(response.body);
         String formatedTime = json['formatted'];
-        return DateTime.parse(formatedTime.replaceAll("", "T"));
+        return DateTime.parse(formatedTime);
       }else{
         throw Exception("Failed to load time data");
       }

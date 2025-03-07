@@ -31,10 +31,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
         .then((value) {
       print("API Response: $value");
       if (value != null) {
-        setState(() {
-          weatherInfo = value;
-          cityTime = cityTime;
-          isLoading = false;
+       WeatherService()
+        .fetchTime(value.latitude, value.longitude)
+        .then((time){
+          print("Time: $time");
+          setState(() {
+            weatherInfo = value;
+            cityTime = time;
+            isLoading = false;
+          });
         });
       } else {
         setState(() {
@@ -113,24 +118,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         actions: [
           IconButton(
               icon: Icon(Icons.shuffle, color: Colors.white),
-              onPressed: () {
-                setState(() {
-                  isLoading = true;
-                });
-                WeatherService().fetchRandomWeather().then((value) {
-                  if (value != null) {
-                    setState(() {
-                      weatherInfo = value;
-                      isLoading = false;
-                    });
-                  }
-                }).catchError((error) {
-                  print(error);
-                  setState(() {
-                    isLoading = false;
-                  });
-                });
-              })
+              onPressed: fetchRandomWeather)
         ],
       ),
       body: SingleChildScrollView(
